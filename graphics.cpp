@@ -8,31 +8,31 @@ enum State {PLAY, END};
 
 GLdouble width, height;
 int wd;
-float R;
-float G;
-float B;
-Snake s;
+int score;
+Snake snake;
 State screenState = PLAY;
 Rect food;
-
+int speed;
 
 
 void spawnFood() {
-    int xRand = rand() % ((int)width - 20) + 10;
-    int yRand = rand() % ((int)height - 20) + 10;
-
-    int x = ceil(xRand / 20) * 20 - 10;
-    int y = ceil(yRand / 20) * 20 - 10;
+    int xMax = width - 20;
+    int yMax = height - 20;
+    int xRand = rand() % xMax + 10;
+    int yRand = rand() % yMax + 10;
+    double x = ceil(xRand / 20) * 20 - 10;
+    double y = ceil(yRand / 20) * 20 - 10;
 
     food = Rect(point2D(x, y), dimensions(20, 20));
-    food.setColor(color(0.7, 0.7, 0.7));
+    food.setColor(color(0.4, 0.4, 0.4));
 }
-
 
 void init() {
     width = 1000;
     height = 500;
-    s = Snake();
+    speed = 100;
+    score = 0;
+    snake = Snake();
     srand(time(0));
     spawnFood();
 }
@@ -61,25 +61,27 @@ void display() {
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // DO NOT CHANGE THIS LINE
 
+    if (score % 5 == 0) {
+        speed -= 50;
+    }
 
-    // Set the color to draw
-    // Note: you can change this at any time during the drawing process
-
-
-
-//    s.moveAndUpdateBody();
     if (screenState == PLAY) {
-
-
-        s.draw();
-        if (s.getHead().isOverlapping(food)) {
-            s.grow();
+        snake.draw();
+        if (snake.getHead().isOverlapping(food)) {
+            snake.grow();
             spawnFood();
+            ++score;
         }
         food.draw();
-        if (s.checkLose(width, height)) {
-            std::cout << "YOU LOSE!" << std::endl;
+        if (snake.checkLose(width, height)) {
             screenState = END;
+        }
+
+        string scoreCounter = "Score: " + to_string(score);
+        glColor3f(0, 0, 0);
+        glRasterPos2i(width - (10 * scoreCounter.length()), 15);
+        for (const char &letter : scoreCounter) {
+            glutBitmapCharacter(GLUT_BITMAP_8_BY_13, letter);
         }
     }
 
@@ -91,12 +93,7 @@ void display() {
             glutBitmapCharacter(GLUT_BITMAP_8_BY_13, letter);
         }
     }
-
-
-
-
-
-
+    
     glFlush();  // Render now
 }
 
@@ -115,16 +112,16 @@ void kbd(unsigned char key, int x, int y)
 void kbdS(int key, int x, int y) {
     switch(key) {
         case GLUT_KEY_DOWN:
-            s.changeDirection(DOWN);
+            snake.changeDirection(DOWN);
             break;
         case GLUT_KEY_LEFT:
-            s.changeDirection(LEFT);
+            snake.changeDirection(LEFT);
             break;
         case GLUT_KEY_RIGHT:
-            s.changeDirection(RIGHT);
+            snake.changeDirection(RIGHT);
             break;
         case GLUT_KEY_UP:
-            s.changeDirection(UP);
+            snake.changeDirection(UP);
             break;
     }
 
@@ -132,19 +129,17 @@ void kbdS(int key, int x, int y) {
 }
 
 void cursor(int x, int y) {
-
 //    glutPostRedisplay();
 }
 
 // button will be GLUT_LEFT_BUTTON or GLUT_RIGHT_BUTTON
 // state will be GLUT_UP or GLUT_DOWN
 void mouse(int button, int state, int x, int y) {
-
     glutPostRedisplay();
 }
 
 void timer(int dummy) {
-    s.moveAndUpdateBody();
+    snake.moveAndUpdateBody();
     glutPostRedisplay();
     glutTimerFunc(100, timer, 0);  // 250 is good time
 }
@@ -159,7 +154,7 @@ int main(int argc, char** argv) {
     glutInitDisplayMode(GLUT_RGBA);
 
     glutInitWindowSize((int)width, (int)height);
-    glutInitWindowPosition(0, 0); // Position the window's initial top-left corner
+    glutInitWindowPosition(0, 0); // Position the window'snake initial top-left corner
     /* create the window and store the handle to it */
     wd = glutCreateWindow("Dark Green" /* title */ );
 

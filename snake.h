@@ -15,6 +15,7 @@ enum Direction {LEFT, RIGHT, UP, DOWN};
 class Snake {
 private:
     int length;
+    dimensions dim = dimensions(20, 20);
     Direction currDirection;
     vector<Rect> body;
 

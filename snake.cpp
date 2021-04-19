@@ -8,13 +8,9 @@
 
 Snake::Snake() {
     length = 1;
-    Rect bodySegment = Rect(point2D(10, 10), dimensions(20, 20));
+    Rect bodySegment = Rect(point2D(10, 10), dim);
     bodySegment.setColor(color(0, 0, 0));
     body.push_back(bodySegment);
-}
-
-int Snake::getLength() {
-    return length;
 }
 
 void Snake::moveAndUpdateBody() {
@@ -65,13 +61,10 @@ Rect Snake::getHead() {
 }
 
 void Snake::grow() {
-    std::cout << "GROWING" << std::endl;
-
-    Rect bodySegment = Rect(body.back().getCenter(), dimensions(20, 20));
-    bodySegment.setColor(color(0, 0.25, 0));
+    Rect bodySegment = Rect(body.back().getCenter(), dim);
+    bodySegment.setColor(color(0, 0.0, 0));
     body.push_back(bodySegment);
     ++length;
-    std::cout << "Length: " << length << std::endl;
 }
 
 bool Snake::checkLose(int width, int height) {
@@ -92,6 +85,4 @@ void Snake::draw() const {
     for (Rect r : body) {
         r.draw();
     }
-
-//    body[0].draw();
 }
