@@ -8,7 +8,7 @@ intersects with itself it's game over. Try and get the highest score you can.
 
 # Setup
 In order to run this program FreeGLUT must be installed and set up in the project.
-#### Setup on Max:
+#### Setup on Mac:
 - No additional setup required on OSX.
 #### Setup on Linux:
 - Use the CMakeLists-Linux.txt file
