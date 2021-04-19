@@ -18,5 +18,5 @@ to `C:/Program Files/Common Files/freeglut/`. If the directory does not exist th
 - Add `freeglut.dll` from `freeglue/bin/` to the cmake-build-debug folder.
  
 # Keyboard and Mouse Commands
-This program uses the arrow keys to change the direction that the snake is moving in. In addition, the escape key can
-be pressed at any time in order to quit the program.
+This program uses the arrow keys to change the direction that the snake is moving in. In addition, the 'esc' key can
+be pressed at any time in order to exit the program. No mouse commands are recognized by the program.
