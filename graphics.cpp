@@ -1,6 +1,5 @@
 #include "graphics.h"
 #include "snake.h"
-#include <iostream>
 #include <vector>
 using namespace std;
 
