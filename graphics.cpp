@@ -3,7 +3,8 @@
 #include <vector>
 using namespace std;
 
-enum State {PLAY, END};
+
+enum State {PLAY, END};  // Enum for screen states
 
 GLdouble width, height;
 int wd;
@@ -11,9 +12,13 @@ int score;
 Snake snake;
 State screenState = PLAY;
 Rect food;
-int speed;
 
-
+/*
+ * Requires: Nothing
+ * Modifies: food
+ * Effects: Creates a new food node for the snake to eat. The position is randomized and then snapped to the grid that
+ *          that the snake is moving on.
+*/
 void spawnFood() {
     int xMax = width - 20;
     int yMax = height - 20;
@@ -26,10 +31,10 @@ void spawnFood() {
     food.setColor(color(0.4, 0.4, 0.4));
 }
 
+/* Initialize starting values */
 void init() {
     width = 1000;
     height = 500;
-    speed = 100;
     score = 0;
     snake = Snake();
     srand(time(0));
@@ -41,7 +46,6 @@ void initGL() {
     // Set "clearing" or background color
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 }
-
 
 /* Handler for window-repaint event. Call back when the window first appears and
  whenever the window needs to be re-painted. */
@@ -59,10 +63,6 @@ void display() {
     glClear(GL_COLOR_BUFFER_BIT); // DO NOT CHANGE THIS LINE
 
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // DO NOT CHANGE THIS LINE
-
-    if (score % 5 == 0) {
-        speed -= 50;
-    }
 
     if (screenState == PLAY) {
         snake.draw();
@@ -97,8 +97,7 @@ void display() {
 }
 
 // http://www.theasciicode.com.ar/ascii-control-characters/escape-ascii-code-27.html
-void kbd(unsigned char key, int x, int y)
-{
+void kbd(unsigned char key, int x, int y) {
     // escape
     if (key == 27) {
         glutDestroyWindow(wd);
@@ -108,6 +107,7 @@ void kbd(unsigned char key, int x, int y)
     glutPostRedisplay();
 }
 
+/* Change the direction of the snake based on arrow keys */
 void kbdS(int key, int x, int y) {
     switch(key) {
         case GLUT_KEY_DOWN:
@@ -123,20 +123,17 @@ void kbdS(int key, int x, int y) {
             snake.changeDirection(UP);
             break;
     }
-
-//    glutPostRedisplay();
 }
 
 void cursor(int x, int y) {
-//    glutPostRedisplay();
 }
 
 // button will be GLUT_LEFT_BUTTON or GLUT_RIGHT_BUTTON
 // state will be GLUT_UP or GLUT_DOWN
 void mouse(int button, int state, int x, int y) {
-    glutPostRedisplay();
 }
 
+/* Only update the position of the snake every 100 milliseconds */
 void timer(int dummy) {
     snake.moveAndUpdateBody();
     glutPostRedisplay();
@@ -148,7 +145,7 @@ int main(int argc, char** argv) {
 
     init();
 
-    glutInit(&argc, argv);          // Initialize GLUT
+    glutInit(&argc, argv);  // Initialize GLUT
 
     glutInitDisplayMode(GLUT_RGBA);
 

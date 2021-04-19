@@ -5,6 +5,7 @@
 #include "rect.h"
 using std::vector;
 
+
 enum Direction {LEFT, RIGHT, UP, DOWN};
 
 class Snake {
