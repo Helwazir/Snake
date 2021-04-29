@@ -1,6 +1,7 @@
 #include "graphics.h"
 #include "snake.h"
 #include <vector>
+#include <iostream>
 using namespace std;
 
 
@@ -24,9 +25,8 @@ void spawnFood() {
     int yMax = height - 20;
     int xRand = rand() % xMax + 10;
     int yRand = rand() % yMax + 10;
-    double x = ceil(xRand / 20) * 20 - 10;
-    double y = ceil(yRand / 20) * 20 - 10;
-
+    int x = ceil(xRand / 20) * 20 + 10;
+    int y = ceil(yRand / 20) * 20 + 10;
     food = Rect(point2D(x, y), dimensions(20, 20));
     food.setColor(color(0.4, 0.4, 0.4));
 }
